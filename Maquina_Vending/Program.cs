@@ -5,120 +5,206 @@ namespace Maquina_Vending
 {
     class Program
     {
+        static List<Usuario> listaUsuarios;
         static void Main(string[] args)
         {
-            // Creamos una instancia de la máquina de vending
-            VendingMachine maquina = new VendingMachine();
+            listaUsuarios = new List<Usuario>();
 
-            // Agregamos algunos productos a la máquina
-            maquina.AgregarProducto(new Producto("Refresco", 1.51m));
-            maquina.AgregarProducto(new Producto("Agua", 1.00m));
-            maquina.AgregarProducto(new Producto("Snack", 2.00m));
+            //Llamamos a la función para cargar los usuarios desde un archivo. Si devuelve false, es que no hya usuarios
+            if (!CargarUsuariosDeArchivo())
+            {//Si no hay usuarios, creamos al admin
+                Admin admin = new Admin(0, "admin", "Admin", "Admin", "Admin", "admin", listaContenidos);
+                listaUsuarios.Add(admin);
+                admin.ToFile(); //Guardamos el admin en el archivo
+            }
+            //Llamamos a la función para cargar los contenidos desde un archivo
+            CargarContenidosDeArchivo();
 
-            Console.WriteLine("Bienvenido a la máquina de vending.");
-
-            while (true)
+            int opcion = 0;
+            do
             {
-                // Mostramos los productos disponibles
-                Console.WriteLine("\nProductos disponibles:");
-                foreach (Producto producto in maquina.ProductosDisponibles())
+                Console.Clear();
+                Console.WriteLine("1.- Login");
+                Console.WriteLine("2.- Registrarse");
+                Console.WriteLine("3.- Salir");
+                Console.WriteLine("Opción: ");
+                try
                 {
-                    Console.WriteLine($"{producto.Nombre} - {producto.Precio:C}");
+                    opcion = int.Parse(Console.ReadLine());
+                    switch (opcion)
+                    {
+                        case 1:
+                            Login();
+                            break;
+
+                        case 2:
+                            AddUsuario();
+                            break;
+
+                        default:
+                            Console.WriteLine("Opción no valida");
+                            break;
+                    }
                 }
-
-                // Solicitamos al usuario que seleccione un producto
-                Console.Write("\nSeleccione el número del producto que desea comprar (o 0 para salir): ");
-                int seleccion;
-                while (!int.TryParse(Console.ReadLine(), out seleccion) || seleccion < 0 || seleccion > maquina.NumeroDeProductos())
+                catch (FormatException)
                 {
-                    Console.WriteLine("Selección inválida. Intente de nuevo.");
+                    Console.WriteLine("Error: Opción invalida. Por favor, ingrese un número válido.");
                 }
-
-                if (seleccion == 0)
-                    break;
-
-                // Realizamos la compra del producto seleccionado
-                Producto productoSeleccionado = maquina.ObtenerProducto(seleccion);
-
-                // Solicitamos al usuario que ingrese monedas
-                Console.Write($"Inserte {productoSeleccionado.Precio:C} en monedas: ");
-                decimal montoIngresado;
-                while (!decimal.TryParse(Console.ReadLine(), out montoIngresado) || montoIngresado < productoSeleccionado.Precio)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Monto insuficiente. Intente de nuevo.");
+                    Console.WriteLine("Error: " + ex.Message);
                 }
+                Console.WriteLine("Presiona una tecla para continuar...");
+                Console.ReadKey();
+            } while (opcion != 3);
+        }
 
-                // Realizamos la compra y mostramos el cambio si es necesario
-                decimal cambio = maquina.ComprarProducto(productoSeleccionado, montoIngresado);
-                if (cambio > 0)
+        // Solicita usuario y contraseña, comprueba si coincide, y si es así muestra su menú
+        public static void Login()
+        {
+            Console.WriteLine("Nombre de usuario: ");
+            string nickname = Console.ReadLine();
+            Console.WriteLine("Password: ");
+            string pass = Console.ReadLine();
+            bool usuarioEncontrado = false;
+            foreach (Usuario usuario in listaUsuarios)
+            {
+                if (usuario.Login(nickname, pass))
                 {
-                    Console.WriteLine($"Gracias por su compra. Su cambio es {cambio:C}");
+                    usuarioEncontrado = true;
+                    usuario.Menu();
+                }
+            }
+            if (!usuarioEncontrado)
+            {
+                Console.WriteLine("Usuario o contraseña incorrrectos");
+            }
+        }
+
+        public static void AddUsuario()
+        {
+            Console.Clear();
+            Console.WriteLine("=== Registro de nuevo usuario ===");
+            Console.WriteLine("Ingrese un nickname: ");
+            string nickname = Console.ReadLine();
+            // Verificar si el nickname ya está en uso            
+            foreach (Usuario usuario in listaUsuarios)
+            {
+                if (usuario._nickName == nickname)
+                {
+                    Console.WriteLine("El nickname ya está en uso. Intente con otro.");
+                    return;
                 }
                 else
                 {
-                    Console.WriteLine("Gracias por su compra. No hay cambio.");
+                    Console.WriteLine("Nickname valido");
                 }
             }
+            // Solicitar otros datos del usuario
+            Console.WriteLine("Ingrese su nombre: ");
+            string nombre = Console.ReadLine();
+            Console.WriteLine("Ingrese su primer apellido: ");
+            string ape1 = Console.ReadLine();
+            Console.WriteLine("Ingrese su segundo apellido: ");
+            string ape2 = Console.ReadLine();
+            // Generar un ID único para el nuevo usuario
+            int idu = listaUsuarios.Count + 1;
+            // Solicitar contraseña
+            Console.WriteLine("Ingrese su contraseña: ");
+            string password = Console.ReadLine();
+            // Crear el nuevo usuario normal y agregarlo a la lista de usuarios
+            UsuarioNormal nuevoUsuario = new UsuarioNormal(idu, nickname, nombre, ape1, ape2, password, listaContenidos);
+            listaUsuarios.Add(nuevoUsuario);
+            nuevoUsuario.ToFile();  //Guardamos el usuario en el archivo
+
+            Console.WriteLine("Usuario registrado con éxito.");
         }
-    }
-
-    // Clase para representar un producto en la máquina de vending
-    class Producto
-    {
-        public string Nombre { get; }
-        public decimal Precio { get; }
-
-        public Producto(string nombre, decimal precio)
+        private static bool CargarUsuariosDeArchivo()
         {
-            Nombre = nombre;
-            Precio = precio;
-        }
-    }
-
-    // Clase para representar la máquina de vending
-    class VendingMachine
-    {
-        private List<Producto> productos = new List<Producto>();
-
-        // Agregar un producto a la máquina
-        public void AgregarProducto(Producto producto)
-        {
-            productos.Add(producto);
-        }
-
-        // Obtener la lista de productos disponibles
-        public List<Producto> ProductosDisponibles()
-        {
-            return productos;
-        }
-
-        // Obtener el número total de productos en la máquina
-        public int NumeroDeProductos()
-        {
-            return productos.Count;
-        }
-
-        // Obtener un producto por su número de selección
-        public Producto ObtenerProducto(int seleccion)
-        {
-            return productos[seleccion - 1];
-        }
-
-        // Realizar la compra de un producto
-        public decimal ComprarProducto(Producto producto, decimal montoIngresado)
-        {
-            decimal cambio = montoIngresado - producto.Precio;
-            if (cambio >= 0)
+            bool usuariosCargados = false;
+            try
             {
-                // Restar el producto de la máquina
-                productos.Remove(producto);
-                return cambio;
+                if (File.Exists("usuarios.txt"))
+                {
+                    StreamReader sr = new StreamReader("usuarios.txt");
+                    string linea;
+                    while ((linea = sr.ReadLine()) != null)
+                    {
+                        usuariosCargados = true;
+                        string[] datos = linea.Split('|');
+                        if (datos[0] == "0") //si el ID es 0, es el admin
+                        {
+                            Admin a = new Admin(int.Parse(datos[0]), datos[1], datos[2], datos[3], datos[4], datos[5], listaContenidos);
+                            listaUsuarios.Add(a);
+                        }
+                        else
+                        {
+                            UsuarioNormal u = new UsuarioNormal(int.Parse(datos[0]), datos[1], datos[2], datos[3], datos[4], datos[5], listaContenidos);
+                            listaUsuarios.Add(u);
+                        }
+                    }
+                    sr.Close();
+                }
+                else
+                {
+                    //Creamos el archivo vacio con file.create
+                    File.Create("usuarios.txt").Close();
+                }
             }
-            else
+            catch (FileNotFoundException ex)
             {
-                // No hay suficiente dinero ingresado
-                return -1;
+                Console.WriteLine("No se encuentra el archivo de usuarios: " + ex.Message);
             }
+            catch (IOException ex)
+            {
+                Console.WriteLine("Error de E/S: " + ex.Message);
+            }
+
+            return usuariosCargados;
+        }
+        private static bool CargarContenidosDeArchivo()
+        {
+            bool contenidosCargados = false;
+            try
+            {
+                if (File.Exists("contenidos.txt"))
+                {
+                    using (StreamReader sr = new StreamReader("contenidos.txt"))
+                    {
+                        string linea;
+                        while ((linea = sr.ReadLine()) != null)
+                        {
+                            contenidosCargados = true;
+                            string[] datos = linea.Split('|');
+                            if (datos[0] == "0") // Si el ID es 0, es el admin
+                            {
+                                Admin a = new Admin(int.Parse(datos[0]), datos[1], datos[2], datos[3], datos[4], datos[5], listaContenidos);
+                                listaUsuarios.Add(a);
+                            }
+                            else
+                            {
+                                UsuarioNormal u = new UsuarioNormal(int.Parse(datos[0]), datos[1], datos[2], datos[3], datos[4], datos[5], listaContenidos);
+                                listaUsuarios.Add(u);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Creamos el archivo vacío con File.Create
+                    File.Create("contenidos.txt").Close();
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("No se encuentra el archivo de usuarios: " + ex.Message);
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("Error de E/S: " + ex.Message);
+            }
+
+            return contenidosCargados;
         }
     }
 }
