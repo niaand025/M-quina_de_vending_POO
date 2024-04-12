@@ -11,7 +11,7 @@ namespace Maquina_Vending
             VendingMachine maquina = new VendingMachine();
 
             // Agregamos algunos productos a la máquina
-            maquina.AgregarProducto(new Producto("Refresco", 1.50m));
+            maquina.AgregarProducto(new Producto("Refresco", 1.51m));
             maquina.AgregarProducto(new Producto("Agua", 1.00m));
             maquina.AgregarProducto(new Producto("Snack", 2.00m));
 
