@@ -10,5 +10,6 @@ namespace Maquina_Vending
     {
         /*Los productos alimenticios incluyen información nutricional para informar a los consumidores sobre 
          * el recuento de calorías, el contenido de grasa, el contenido de azúcar, etc.*/
+        public string Informacion { get; set; } 
     }
 }

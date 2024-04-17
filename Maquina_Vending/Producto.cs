@@ -20,5 +20,6 @@ namespace Maquina_Vending
             this.PrecioUnidad = precioUnidad;
             this.Descripcion = descripcion;
         }
+        public abstract void ToFile();
     }
 }

@@ -10,5 +10,8 @@ namespace Maquina_Vending
     {
         /*Los productos electrónicos incluyen el tipo de materiales utilizados, un indicador booleano para la inclusión de pilas (sí/no) 
          * y un indicador booleano para saber si el producto está precargado.*/
+        public string Material { get; set; }
+        public bool Pilas { get; set; }
+        public bool Precargado { get; set; }    
     }
 }
