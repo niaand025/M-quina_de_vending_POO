@@ -11,7 +11,7 @@ namespace Maquina_Vending
         public Cliente(int idu, string nickName, string nombre, string ape1, string ape2, string password) :
         base(idu, nickName, nombre, ape1, ape2, password)
         {
-            
+            //Flecha guapo
         }
     }
 }
