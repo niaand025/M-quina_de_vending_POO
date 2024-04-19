@@ -11,7 +11,94 @@ namespace Maquina_Vending
         public Cliente(int idu, string nickName, string nombre, string ape1, string ape2, string password) :
         base(idu, nickName, nombre, ape1, ape2, password)
         {
-            //Flecha guapo
+           
+        }
+        public override void Menu()
+        {
+            int opcion = 0;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("1.- Comprar un producto");
+                Console.WriteLine("2.- Mostrar productos");                
+                Console.WriteLine("3.- salir");
+                Console.WriteLine("Opción: ");
+                try
+                {
+                    opcion = int.Parse(Console.ReadLine());
+                    switch (opcion)
+                    {
+                        case 1:
+
+                            break;
+
+                        case 2:
+
+                            break;
+
+                        case 3:
+                            Console.WriteLine("Saleindo...");
+                            break;                        
+
+                        default:
+                            Console.WriteLine("Opción no valida");
+                            break;
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Error: Opción invalida. Por favor, ingrese un número válido.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+                Console.WriteLine("Presiona una tecla para continuar...");
+                Console.ReadKey();
+            } while (opcion != 5);
+        }
+
+        public void ComprarProducto()
+        {
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public override void Salir()
+        {
+            // Almacenar la lista de contenidos en contenido.txt
+            if (listaContenidos.Count > 0) // Si hay contenidos en la lista...
+            {
+                using (StreamWriter sw = new StreamWriter("contenidos.txt", true))
+                {
+                    foreach (Contenido c in listaContenidos)
+                    {
+                        c.ToFile(); // Guardamos cada contenido en el archivo
+                    }
+                }
+            }
         }
     }
 }

@@ -9,5 +9,12 @@ namespace Maquina_Vending
     internal class MaquinaVending
     {
         int slots = 12;
+        public List<Producto> listaProductos;
+
+        public MaquinaVending (List<Producto> productos)
+        {
+            listaProductos = productos;
+        }
+
     }
 }

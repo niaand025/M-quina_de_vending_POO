@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Maquina_Vending
 {
-    internal class Usuario
+    abstract class Usuario
     {
         public int Id { get; set; }
         public string NickName { get; set; }
