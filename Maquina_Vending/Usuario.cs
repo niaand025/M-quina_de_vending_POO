@@ -56,7 +56,7 @@ namespace Maquina_Vending
             sw.WriteLine($"{Id}|{NickName}|{Nombre}|{Ape1}|{Ape2}|{Password}");
             sw.Close();
         }
-        public abstract void Menu();
+        
         public abstract void Salir();
     }
 }

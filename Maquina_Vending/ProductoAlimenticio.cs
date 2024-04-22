@@ -7,9 +7,22 @@ using System.Threading.Tasks;
 namespace Maquina_Vending
 {
     internal class ProductoAlimenticio : Producto
-    {
-        /*Los productos alimenticios incluyen información nutricional para informar a los consumidores sobre 
-         * el recuento de calorías, el contenido de grasa, el contenido de azúcar, etc.*/
-        public string Informacion { get; set; } 
+    {        
+        public string Informacion { get; set; }
+
+        public ProductoAlimenticio(string nombre, int unidades, double precioUnidad, string descripcion, string informacion)
+        : base(nombre, unidades, precioUnidad, descripcion)
+        {
+            this.Informacion = informacion;            
+        }
+        public override void MostrarInformacion()
+        {
+            Console.WriteLine($"Nombre: {Nombre}");
+            Console.WriteLine($"Precio: {PrecioUnidad}");
+            Console.WriteLine($"Descripción: {Descripcion}");
+            Console.WriteLine($"Unidades disponibles: {Unidades}");
+            Console.WriteLine($"Información nutricional: {Informacion}");
+            
+        }
     }
 }
