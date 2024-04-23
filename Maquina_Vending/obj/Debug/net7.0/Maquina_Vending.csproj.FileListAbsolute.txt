@@ -1,0 +1,15 @@
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\bin\Debug\net7.0\Maquina_Vending.exe
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\bin\Debug\net7.0\Maquina_Vending.deps.json
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\bin\Debug\net7.0\Maquina_Vending.runtimeconfig.json
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\bin\Debug\net7.0\Maquina_Vending.dll
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\bin\Debug\net7.0\Maquina_Vending.pdb
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\obj\Debug\net7.0\Maquina_Vending.csproj.AssemblyReference.cache
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\obj\Debug\net7.0\Maquina_Vending.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\obj\Debug\net7.0\Maquina_Vending.AssemblyInfoInputs.cache
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\obj\Debug\net7.0\Maquina_Vending.AssemblyInfo.cs
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\obj\Debug\net7.0\Maquina_Vending.csproj.CoreCompileInputs.cache
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\obj\Debug\net7.0\Maquina_Vending.dll
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\obj\Debug\net7.0\refint\Maquina_Vending.dll
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\obj\Debug\net7.0\Maquina_Vending.pdb
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\obj\Debug\net7.0\Maquina_Vending.genruntimeconfig.cache
+C:\Users\franc\source\repos\Maquina_Vending\Maquina_Vending\obj\Debug\net7.0\ref\Maquina_Vending.dll

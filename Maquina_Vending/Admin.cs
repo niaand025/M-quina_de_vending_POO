@@ -8,6 +8,7 @@ namespace Maquina_Vending
 {
     internal class Admin : Usuario
     {
+        private MaquinaVending maquinaVending;
         public Admin(int id, string nickName, string nombre, string ape1, string ape2, string password) :
         base(id, nickName, nombre, ape1, ape2, password)
         { 
@@ -50,19 +51,19 @@ namespace Maquina_Vending
                     switch (opcion)
                     {
                         case 1:
-
+                            maquinaVending.ComprarProdcuto(this);
                             break;
 
                         case 2:
-
+                            maquinaVending.MostrarInformacionProducto();
                             break;
 
                         case 3:
-
+                            maquinaVending.CargarProductosIndividualmente();
                             break;
 
                         case 4:
-
+                            maquinaVending.CargarProductosDesdeArchivo(string archivo);
                             break;
 
                         case 5:

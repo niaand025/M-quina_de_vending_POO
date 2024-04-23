@@ -127,7 +127,6 @@ namespace Maquina_Vending
             return true;
         }
 
-        //---------------------------------------------------------------------------------------------------------
         public void MostrarInformacionProducto()
         {
             // Mostrar los productos disponibles
@@ -150,6 +149,143 @@ namespace Maquina_Vending
             else
             {
                 Console.WriteLine("El producto no está disponible.");
+            }
+        }
+
+        public void CargarProductosIndividualmente()
+        {
+            // Solicitar al usuario que ingrese los detalles del nuevo producto
+            Console.WriteLine("Ingrese los detalles del nuevo producto:");
+
+            Console.Write("ID del producto: ");
+            int id = int.Parse(Console.ReadLine());
+
+            Console.Write("Nombre del producto: ");
+            string nombre = Console.ReadLine();
+
+            Console.Write("Unidades disponibles: ");
+            int unidades = int.Parse(Console.ReadLine());
+
+            Console.Write("Precio por unidad: ");
+            double precioUnidad = double.Parse(Console.ReadLine());
+
+            Console.Write("Descripción del producto: ");
+            string descripcion = Console.ReadLine();
+
+            // Determinar el tipo de producto (materiales preciosos, productos alimenticios, productos electrónicos)
+            Console.WriteLine("Seleccione el tipo de producto:");
+            Console.WriteLine("1. Materiales preciosos");
+            Console.WriteLine("2. Productos alimenticios");
+            Console.WriteLine("3. Productos electrónicos");
+            Console.Write("Elija una opción: ");
+            int opcionTipo = int.Parse(Console.ReadLine());
+
+            Producto nuevoProducto = null;
+
+            switch (opcionTipo)
+            {
+                case 1:
+                    Console.Write("Material: ");
+                    string material = Console.ReadLine();
+
+                    Console.Write("Peso: ");
+                    double peso = double.Parse(Console.ReadLine());
+
+                    nuevoProducto = new MaterialPrecioso(id, nombre, unidades, precioUnidad, descripcion, material, peso);
+                    break;
+
+                case 2:
+                    Console.Write("Información nutricional: ");
+                    string informacionNutricional = Console.ReadLine();
+
+                    nuevoProducto = new ProductoAlimenticio(id, nombre, unidades, precioUnidad, descripcion, informacionNutricional);
+                    break;
+
+                case 3:
+                    Console.Write("Materiales utilizados: ");
+                    string materialesUtilizados = Console.ReadLine();
+
+                    Console.Write("¿Tiene pilas? (Sí/No): ");
+                    bool tienePilas = Console.ReadLine().ToLower() == "si";
+
+                    Console.Write("¿Está precargado? (Sí/No): ");
+                    bool estaPrecargado = Console.ReadLine().ToLower() == "si";
+
+                    nuevoProducto = new ProductoElectronico(id, nombre, unidades, precioUnidad, descripcion, materialesUtilizados, tienePilas, estaPrecargado);
+                    break;
+
+                default:
+                    Console.WriteLine("Opción no válida.");
+                    return;
+            }
+
+            // Agregar el nuevo producto a la lista de productos
+            listaProductos.Add(nuevoProducto);
+            Console.WriteLine("Producto agregado correctamente.");
+        }
+
+        public void CargarProductosDesdeArchivo(string archivo)
+        {
+            try
+            {
+                // Leer el archivo CSV línea por línea
+                using (StreamReader reader = new StreamReader(archivo))
+                {
+                    string linea;
+                    while ((linea = reader.ReadLine()) != null)
+                    {
+                        // Dividir la línea en sus campos utilizando el delimitador ";"
+                        string[] campos = linea.Split(';');
+
+                        // Extraer los datos de cada campo
+                        int id = int.Parse(campos[0]);
+                        string nombre = campos[1];
+                        int unidades = int.Parse(campos[2]);
+                        double precioUnidad = double.Parse(campos[3]);
+                        string descripcion = campos[4];
+                        int tipoProducto = int.Parse(campos[5]);
+
+                        // Crear una instancia del tipo de producto adecuado según el valor de tipoProducto
+                        Producto nuevoProducto = null;
+                        switch (tipoProducto)
+                        {
+                            case 1:
+                                string material = campos[6];
+                                double peso = double.Parse(campos[7]);
+                                nuevoProducto = new MaterialPrecioso(id, nombre, unidades, precioUnidad, descripcion, material, peso);
+                                break;
+
+                            case 2:
+                                string informacionNutricional = campos[6];
+                                nuevoProducto = new ProductoAlimenticio(id, nombre, unidades, precioUnidad, descripcion, informacionNutricional);
+                                break;
+
+                            case 3:
+                                string materialesUtilizados = campos[6];
+                                bool tienePilas = campos[7].ToLower() == "si";
+                                bool estaPrecargado = campos[8].ToLower() == "si";
+                                nuevoProducto = new ProductoElectronico(id, nombre, unidades, precioUnidad, descripcion, materialesUtilizados, tienePilas, estaPrecargado);
+                                break;
+
+                            default:
+                                Console.WriteLine($"Tipo de producto no válido en la línea: {linea}");
+                                continue; // Pasar a la siguiente línea del archivo
+                        }
+
+                        // Agregar el nuevo producto a la lista de productos
+                        listaProductos.Add(nuevoProducto);
+                    }
+                }
+
+                Console.WriteLine("Productos cargados desde el archivo correctamente.");
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine($"El archivo '{archivo}' no se encontró.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al cargar productos desde el archivo: {ex.Message}");
             }
         }
 
