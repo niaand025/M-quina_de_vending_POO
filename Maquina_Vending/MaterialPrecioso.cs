@@ -11,8 +11,8 @@ namespace Maquina_Vending
         public string Material { get; set; }
         public double Peso { get; set; }
 
-        public MaterialPrecioso(string nombre, int unidades, double precioUnidad, string descripcion, string material, double peso)
-        : base(nombre, unidades, precioUnidad, descripcion)
+        public MaterialPrecioso(int id, string nombre, int unidades, double precioUnidad, string descripcion, string material, double peso)
+        : base(id, nombre, unidades, precioUnidad, descripcion)
         {
             this.Material = material;
             this.Peso = peso;

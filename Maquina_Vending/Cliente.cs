@@ -8,20 +8,16 @@ namespace Maquina_Vending
 {
     internal class Cliente : Usuario
     {
+        private MaquinaVending maquinaVending;
         public Cliente(int idu, string nickName, string nombre, string ape1, string ape2, string password) :
         base(idu, nickName, nombre, ape1, ape2, password)
         {
-           
+            this.maquinaVending = maquinaVending;
         }
         public override void Salir()
         {
-            Console.WriteLine("Administrador ha salido.");
-        }
-
-        public void ComprarProducto()
-        {
-
-        }
+            Console.WriteLine("Cliente ha salido.");
+        }        
         
         public override void Menu()
         {
@@ -39,25 +35,17 @@ namespace Maquina_Vending
                     switch (opcion)
                     {
                         case 1:
-
+                            maquinaVending.ComprarProdcuto(this);
                             break;
 
                         case 2:
-
+                            maquinaVending.MostrarInformacionProducto();
                             break;
 
                         case 3:
-
-                            break;
-
-                        case 4:
-
-                            break;
-
-                        case 5:
-                            Console.WriteLine("Saleindo...");
-                            break;
-
+                            Salir();
+                            break;     
+                            
                         default:
                             Console.WriteLine("Opción no valida");
                             break;
@@ -73,7 +61,7 @@ namespace Maquina_Vending
                 }
                 Console.WriteLine("Presiona una tecla para continuar...");
                 Console.ReadKey();
-            } while (opcion != 5);
+            } while (opcion != 3);
         }
     }
 }

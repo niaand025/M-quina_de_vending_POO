@@ -10,8 +10,8 @@ namespace Maquina_Vending
     {        
         public string Informacion { get; set; }
 
-        public ProductoAlimenticio(string nombre, int unidades, double precioUnidad, string descripcion, string informacion)
-        : base(nombre, unidades, precioUnidad, descripcion)
+        public ProductoAlimenticio(int id, string nombre, int unidades, double precioUnidad, string descripcion, string informacion)
+        : base(id, nombre, unidades, precioUnidad, descripcion)
         {
             this.Informacion = informacion;            
         }
