@@ -11,64 +11,14 @@ namespace Maquina_Vending
         int slots = 12;
         public List<Producto> listaProductos;
 
-        public MaquinaVending (List<Producto> productos)
+        public MaquinaVending(List<Producto> productos)
         {
             listaProductos = productos;
         }
-        public void Menu()
-        {
-            int opcion = 0;
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("1.- Comprar un producto");
-                Console.WriteLine("2.- Mostrar productos");
-                Console.WriteLine("3.- Carga individual de productos");
-                Console.WriteLine("4.- Carga completa de productos");
-                Console.WriteLine("5.- salir");
-                Console.WriteLine("Opción: ");
-                try
-                {
-                    opcion = int.Parse(Console.ReadLine());
-                    switch (opcion)
-                    {
-                        case 1:
 
-                            break;
+        /*------------------------------------------*/
 
-                        case 2:
 
-                            break;
-
-                        case 3:
-
-                            break;
-
-                        case 4:
-
-                            break;
-
-                        case 5:
-                            Console.WriteLine("Saleindo...");
-                            break;
-
-                        default:
-                            Console.WriteLine("Opción no valida");
-                            break;
-                    }
-                }
-                catch (FormatException)
-                {
-                    Console.WriteLine("Error: Opción invalida. Por favor, ingrese un número válido.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error: " + ex.Message);
-                }
-                Console.WriteLine("Presiona una tecla para continuar...");
-                Console.ReadKey();
-            } while (opcion != 5);
-        }
         public void AgregarProducto(Producto productos)
         {
             listaProductos.Add(productos);
@@ -120,4 +70,5 @@ namespace Maquina_Vending
                 Console.WriteLine($"Error al cargar productos desde el archivo: {ex.Message}");
             }
         }
+    }
 }

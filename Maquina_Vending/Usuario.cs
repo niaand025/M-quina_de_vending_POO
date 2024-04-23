@@ -58,5 +58,6 @@ namespace Maquina_Vending
         }
         
         public abstract void Salir();
+        public abstract void Menu();
     }
 }

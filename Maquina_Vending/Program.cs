@@ -17,8 +17,7 @@ namespace Maquina_Vending
                 listaUsuarios.Add(admin);
                 admin.ToFile(); //Guardamos el admin en el archivo
             }
-            //Llamamos a la función para cargar los contenidos desde un archivo
-            CargarContenidosDeArchivo();
+            
 
             int opcion = 0;
             do
@@ -162,49 +161,6 @@ namespace Maquina_Vending
 
             return usuariosCargados;
         }
-        private static bool CargarContenidosDeArchivo()
-        {
-            bool contenidosCargados = false;
-            try
-            {
-                if (File.Exists("contenidos.txt"))
-                {
-                    using (StreamReader sr = new StreamReader("contenidos.txt"))
-                    {
-                        string linea;
-                        while ((linea = sr.ReadLine()) != null)
-                        {
-                            contenidosCargados = true;
-                            string[] datos = linea.Split('|');
-                            if (datos[0] == "0") // Si el ID es 0, es el admin
-                            {
-                                Admin a = new Admin(int.Parse(datos[0]), datos[1], datos[2], datos[3], datos[4], datos[5]);
-                                listaUsuarios.Add(a);
-                            }
-                            else
-                            {
-                                Cliente u = new Cliente(int.Parse(datos[0]), datos[1], datos[2], datos[3], datos[4], datos[5]);
-                                listaUsuarios.Add(u);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // Creamos el archivo vacío con File.Create
-                    File.Create("contenidos.txt").Close();
-                }
-            }
-            catch (FileNotFoundException ex)
-            {
-                Console.WriteLine("No se encuentra el archivo de usuarios: " + ex.Message);
-            }
-            catch (IOException ex)
-            {
-                Console.WriteLine("Error de E/S: " + ex.Message);
-            }
-
-            return contenidosCargados;
-        }
+        
     }
 }
