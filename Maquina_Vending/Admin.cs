@@ -18,19 +18,7 @@ namespace Maquina_Vending
         public override void Salir()
         {
             Console.WriteLine("Administrador ha salido.");
-        }
-        // Métodos adicionales específicos para el administrador
-        public void AgregarProducto()
-        {
-            // Lógica para agregar un nuevo producto
-            Console.WriteLine("Se agregó un nuevo producto.");
-        }
-
-        public void EliminarProducto()
-        {
-            // Lógica para eliminar un producto existente
-            Console.WriteLine("Se eliminó un producto.");
-        }
+        }     
 
 
         public override void Menu()
