@@ -8,25 +8,24 @@ namespace Maquina_Vending
 {
     internal class Cliente : Usuario
     {
-        private MaquinaVending maquinaVending;
-        public Cliente(int idu, string nickName, string nombre, string ape1, string ape2, string password) :
-        base(idu, nickName, nombre, ape1, ape2, password)
+        public Cliente(int id, string nickName, string nombre, string ape1, string ape2, string password, List<Producto> ListaProductos) :
+        base(id, nickName, nombre, ape1, ape2, password, ListaProductos)
         {
-            this.maquinaVending = maquinaVending;
         }
         public override void Salir()
         {
             Console.WriteLine("Cliente ha salido.");
-        }        
-        
+        }
+
         public override void Menu()
         {
+            MaquinaVending maquinaVending = new MaquinaVending(ListaProductos);
             int opcion = 0;
             do
             {
                 Console.Clear();
                 Console.WriteLine("1.- Comprar un producto");
-                Console.WriteLine("2.- Mostrar información del producto");                
+                Console.WriteLine("2.- Mostrar información del producto");
                 Console.WriteLine("3.- salir");
                 Console.WriteLine("Opción: ");
                 try
@@ -44,8 +43,8 @@ namespace Maquina_Vending
 
                         case 3:
                             Salir();
-                            break;     
-                            
+                            break;
+
                         default:
                             Console.WriteLine("Opción no valida");
                             break;

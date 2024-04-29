@@ -10,11 +10,12 @@ namespace Maquina_Vending
     {        
         public string Informacion { get; set; }
 
-        public ProductoAlimenticio(int id, string nombre, int unidades, double precioUnidad, string descripcion, string informacion)
+        public ProductoAlimenticio(int id, string nombre, int unidades, float precioUnidad, string descripcion, string informacion)
         : base(id, nombre, unidades, precioUnidad, descripcion)
         {
             this.Informacion = informacion;            
         }
+        public ProductoAlimenticio(int id) : base(id) { }
         public override void MostrarInformacion()
         {
             Console.WriteLine($"Nombre: {Nombre}");
@@ -24,5 +25,12 @@ namespace Maquina_Vending
             Console.WriteLine($"Información nutricional: {Informacion}");
             
         }
+        public override void SolicitarInformación()
+        {
+            base.SolicitarInformación();
+            Console.Write("Información nutricional: ");
+            this.Informacion = Console.ReadLine();
+        }
+
     }
 }

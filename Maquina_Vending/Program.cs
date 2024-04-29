@@ -6,14 +6,17 @@ namespace Maquina_Vending
     class Program
     {
         static List<Usuario> listaUsuarios;
+        static List<Producto> listaProductos;
+
         static void Main(string[] args)
         {
             listaUsuarios = new List<Usuario>();
+            listaProductos = new List<Producto>();
 
             //Llamamos a la función para cargar los usuarios desde un archivo. Si devuelve false, es que no hya usuarios
             if (!CargarUsuariosDeArchivo())
             {//Si no hay usuarios, creamos al admin
-                Admin admin = new Admin(0, "admin", "Admin", "Admin", "Admin", "admin");
+                Admin admin = new Admin(0, "admin", "Admin", "Admin", "Admin", "admin", listaProductos);
                 listaUsuarios.Add(admin);
                 admin.ToFile(); //Guardamos el admin en el archivo
             }
@@ -64,11 +67,11 @@ namespace Maquina_Vending
             Console.WriteLine("Nombre de usuario: ");
             string nickname = Console.ReadLine();
             Console.WriteLine("Password: ");
-            string pass = Console.ReadLine();
+            string password = Console.ReadLine();
             bool usuarioEncontrado = false;
             foreach (Usuario usuario in listaUsuarios)
             {
-                if (usuario.Login(nickname, pass))
+                if (usuario.Login(nickname, password))
                 {
                     usuarioEncontrado = true;
                     usuario.Menu();
@@ -107,12 +110,12 @@ namespace Maquina_Vending
             Console.WriteLine("Ingrese su segundo apellido: ");
             string ape2 = Console.ReadLine();
             // Generar un ID único para el nuevo usuario
-            int idu = listaUsuarios.Count + 1;
+            int id = listaUsuarios.Count + 1;
             // Solicitar contraseña
             Console.WriteLine("Ingrese su contraseña: ");
             string password = Console.ReadLine();
             // Crear el nuevo cliente y agregarlo a la lista de usuarios
-            Cliente nuevoUsuario = new Cliente(idu, nickname, nombre, ape1, ape2, password);
+            Cliente nuevoUsuario = new Cliente(id, nickname, nombre, ape1, ape2, password, listaProductos);
             listaUsuarios.Add(nuevoUsuario);
             nuevoUsuario.ToFile();  //Guardamos el usuario en el archivo
 
@@ -133,12 +136,12 @@ namespace Maquina_Vending
                         string[] datos = linea.Split('|');
                         if (datos[0] == "0") //si el ID es 0, es el admin
                         {
-                            Admin a = new Admin(int.Parse(datos[0]), datos[1], datos[2], datos[3], datos[4], datos[5]);
+                            Admin a = new Admin(int.Parse(datos[0]), datos[1], datos[2], datos[3], datos[4], datos[5], listaProductos);
                             listaUsuarios.Add(a);
                         }
                         else
                         {
-                            Cliente u = new Cliente(int.Parse(datos[0]), datos[1], datos[2], datos[3], datos[4], datos[5]);
+                            Cliente u = new Cliente(int.Parse(datos[0]), datos[1], datos[2], datos[3], datos[4], datos[5], listaProductos);
                             listaUsuarios.Add(u);
                         }
                     }

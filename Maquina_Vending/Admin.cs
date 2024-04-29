@@ -8,21 +8,20 @@ namespace Maquina_Vending
 {
     internal class Admin : Usuario
     {
-        private MaquinaVending maquinaVending;
-        public Admin(int id, string nickName, string nombre, string ape1, string ape2, string password) :
-        base(id, nickName, nombre, ape1, ape2, password)
-        { 
+        public Admin(int id, string nickName, string nombre, string ape1, string ape2, string password, List<Producto> ListaProductos) :
+        base(id, nickName, nombre, ape1, ape2, password, ListaProductos)
+        { }
 
-        }
 
         public override void Salir()
         {
             Console.WriteLine("Administrador ha salido.");
-        }     
+        }
 
 
         public override void Menu()
         {
+            MaquinaVending maquinaVending = new MaquinaVending(ListaProductos);
             int opcion = 0;
             do
             {
@@ -51,7 +50,7 @@ namespace Maquina_Vending
                             break;
 
                         case 4:
-                            maquinaVending.CargarProductosDesdeArchivo(string archivo);
+                            maquinaVending.CargarProductosDesdeArchivo("example_vending_file_practical_work_i.csv");
                             break;
 
                         case 5:

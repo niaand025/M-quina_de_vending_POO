@@ -11,12 +11,13 @@ namespace Maquina_Vending
         public string Material { get; set; }
         public double Peso { get; set; }
 
-        public MaterialPrecioso(int id, string nombre, int unidades, double precioUnidad, string descripcion, string material, double peso)
+        public MaterialPrecioso(int id, string nombre, int unidades, float precioUnidad, string descripcion, string material, double peso)
         : base(id, nombre, unidades, precioUnidad, descripcion)
         {
             this.Material = material;
             this.Peso = peso;
         }
+        public MaterialPrecioso(int id) : base(id) { }
 
         public override void MostrarInformacion()
         {
@@ -26,6 +27,14 @@ namespace Maquina_Vending
             Console.WriteLine($"Unidades disponibles: {Unidades}");
             Console.WriteLine($"Tipo de material: {Material}");
             Console.WriteLine($"Peso: {Peso}");
+        }
+        public override void SolicitarInformación()
+        {
+            base.SolicitarInformación();
+            Console.Write("Material: ");
+            this.Material = Console.ReadLine();
+            Console.Write("Peso: ");
+            this.Peso = double.Parse(Console.ReadLine());
         }
     }
 }

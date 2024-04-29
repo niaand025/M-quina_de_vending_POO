@@ -14,15 +14,17 @@ namespace Maquina_Vending
         public string Ape1 { get; set; }
         public string Ape2 { get; set; }
         private string Password { get; set; }
+        public List<Producto> ListaProductos;
 
-        public Usuario(int id, string nickName, string nombre, string ape1, string ape2, string password)
+        public Usuario(int id, string nickName, string nombre, string ape1, string ape2, string password, List<Producto> listaProductos)
         {
             Id = id;
             NickName = nickName;
             Nombre = nombre;
             Ape1 = ape1;
             Ape2 = ape2;
-            Password = password;            
+            Password = password;
+            ListaProductos = listaProductos;
         }
         public Usuario(string nombre, string ape1, string ape2)
         {
@@ -30,7 +32,10 @@ namespace Maquina_Vending
             this.Ape1 = ape1;
             this.Ape2 = ape2;
         }
-        public Usuario() { }
+        public Usuario(List<Producto> ListaProductos) 
+        {
+            this.ListaProductos = ListaProductos;
+        }
         public string GetRealName()
         {
             return $"{Nombre} {Ape1} {Ape2}";
