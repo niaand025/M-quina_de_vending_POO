@@ -34,7 +34,7 @@ namespace Maquina_Vending
                     switch (opcion)
                     {
                         case 1:
-                            maquinaVending.ComprarProdcuto(this);
+                            maquinaVending.ComprarProdcuto();
                             break;
 
                         case 2:

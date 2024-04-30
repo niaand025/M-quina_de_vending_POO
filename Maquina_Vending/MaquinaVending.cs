@@ -14,10 +14,7 @@ namespace Maquina_Vending
         {
             listaProductos = productos;
         }
-
-
-
-        public void ComprarProdcuto(Usuario usuario)
+        public void ComprarProdcuto()
         {
             MostrarProductosDisponibles();
             Console.Write("Ingrese el ID del producto que desea comprar: ");
@@ -45,23 +42,27 @@ namespace Maquina_Vending
                         case 1:
                             if (PagoEfectivo(productoSeleccionado))
                             {
+                                productoSeleccionado.Unidades = productoSeleccionado.Unidades - 1; // Disminuir las unidades del producto
                                 Console.WriteLine("¡Compra exitosa! Reciba su producto.");
-                                productoSeleccionado.Unidades--; // Disminuir las unidades del producto
+                                return;
                             }
                             else
                             {
                                 Console.WriteLine("El pago en efectivo no fue suficiente.");
+                                return;
                             }
                             break;
                         case 2:
                             if (PagoTarjeta())
                             {
                                 Console.WriteLine("¡Compra exitosa! Reciba su producto.");
-                                productoSeleccionado.Unidades--; // Disminuir las unidades del producto
+                                productoSeleccionado.Unidades = productoSeleccionado.Unidades - 1; // Disminuir las unidades del producto
+                                return;
                             }
                             else
                             {
                                 Console.WriteLine("El pago con tarjeta fue rechazado.");
+                                return;
                             }
                             break;
                         case 3:
@@ -249,8 +250,6 @@ namespace Maquina_Vending
                 {
                     Console.WriteLine("Error: " + ex.Message);
                 }
-                Console.WriteLine("Presiona una tecla para continuar...");
-                Console.ReadKey();
             } while (opcion != 3);
 
 
