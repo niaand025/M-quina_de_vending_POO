@@ -31,9 +31,8 @@ namespace Maquina_Vending
                 Console.WriteLine("1.- Comprar un producto");
                 Console.WriteLine("2.- Mostrar productos");
                 Console.WriteLine("3.- Carga individual de productos");
-                Console.WriteLine("4.- Carga completa de productos");
-                Console.WriteLine("5.- Reducir las unidades de un producto a 0");
-                Console.WriteLine("6.- salir");
+                Console.WriteLine("4.- Carga completa de productos");                
+                Console.WriteLine("5.- salir");
                 Console.WriteLine("Opción: ");
                 try
                 {
@@ -57,12 +56,8 @@ namespace Maquina_Vending
                             break;
 
                         case 5:
-                            maquinaVending.ReducirUnidadesProducto();
-                            break;
-
-                        case 6:
                             Salir();
-                            break;
+                            break;                      
 
                         default:
                             Console.WriteLine("Opción no valida");
@@ -79,7 +74,7 @@ namespace Maquina_Vending
                 }
                 Console.WriteLine("Presiona una tecla para continuar...");
                 Console.ReadKey();
-            } while (opcion != 6);
+            } while (opcion != 5);
         }
 
 

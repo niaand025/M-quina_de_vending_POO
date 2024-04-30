@@ -186,7 +186,8 @@ namespace Maquina_Vending
                 Console.Clear();
                 Console.WriteLine("1.- Añadir existencias a un producto existente");
                 Console.WriteLine("2.- Añadir un nuevo producto a las ranuras disponibles");
-                Console.WriteLine("3.- salir");
+                Console.WriteLine("3.- Reducir las unidades de un producto a 0");
+                Console.WriteLine("4.- salir");
                 Console.WriteLine("Opción: ");
                 try
                 {
@@ -255,10 +256,17 @@ namespace Maquina_Vending
                                 Console.WriteLine("Producto agregado correctamente.");
                             }
                             
+                            break;  
+                            
+                        case 3:
+
+                            ReducirUnidadesProducto();
                             break;
 
-                        case 3:
+                        case 4:
+                            
                             break;
+
 
                         default:
                             Console.WriteLine("Opción no valida");
@@ -280,7 +288,7 @@ namespace Maquina_Vending
         }
 
         public void CargarProductosDesdeArchivo()
-        {            
+        {
 
             Console.WriteLine("Introduce el nombre del archivo:");
             string nombreFichero = Console.ReadLine();
@@ -296,44 +304,50 @@ namespace Maquina_Vending
                         {
                             // Dividir la línea en sus campos utilizando el delimitador ";"
                             string[] campos = linea.Split(';');
-
-                            // Extraer los datos de cada campo
-                            string tipoProducto = campos[0];
-                            string nombre = campos[1];
-                            string unidades = campos[2];
-                            float precioUnidad = float.Parse(campos[3]);
-                            string descripcion = campos[4];
-
-                            // Crear una instancia del tipo de producto adecuado según el valor de tipoProducto
-                            switch (tipoProducto)
+                            if(listaProductos.Count < 12)
                             {
-                                case "1":
-                                    string material = campos[5];
-                                    double peso = double.Parse(campos[6].Replace("g",""));
-                                    MaterialPrecioso materialPrecioso = new MaterialPrecioso(listaProductos.Count, nombre, int.Parse(unidades), precioUnidad, descripcion, material, peso);
-                                    listaProductos.Add(materialPrecioso);
-                                    break;
+                                // Extraer los datos de cada campo
+                                string tipoProducto = campos[0];
+                                string nombre = campos[1];
+                                string unidades = campos[2];
+                                float precioUnidad = float.Parse(campos[3]);
+                                string descripcion = campos[4];
 
-                                case "2":
-                                    string informacionNutricional = campos[7];
-                                    ProductoAlimenticio productoAlimenticio = new ProductoAlimenticio(listaProductos.Count, nombre, int.Parse(unidades), precioUnidad, descripcion, informacionNutricional);
-                                    listaProductos.Add(productoAlimenticio);
-                                    break;
+                                // Crear una instancia del tipo de producto adecuado según el valor de tipoProducto
+                                switch (tipoProducto)
+                                {
+                                    case "1":
+                                        string material = campos[5];
+                                        double peso = double.Parse(campos[6].Replace("g", ""));
+                                        MaterialPrecioso materialPrecioso = new MaterialPrecioso(listaProductos.Count, nombre, int.Parse(unidades), precioUnidad, descripcion, material, peso);
+                                        listaProductos.Add(materialPrecioso);
+                                        break;
 
-                                case "3":
-                                    string materialesUtilizados = campos[5];
-                                    bool tienePilas = campos[8] == "1";
-                                    bool estaPrecargado = campos[9] == "1";
-                                    ProductoElectronico productoElectrónico = new ProductoElectronico(listaProductos.Count, nombre, int.Parse(unidades), precioUnidad, descripcion, materialesUtilizados, tienePilas, estaPrecargado);
-                                    listaProductos.Add(productoElectrónico);
-                                    break;
+                                    case "2":
+                                        string informacionNutricional = campos[7];
+                                        ProductoAlimenticio productoAlimenticio = new ProductoAlimenticio(listaProductos.Count, nombre, int.Parse(unidades), precioUnidad, descripcion, informacionNutricional);
+                                        listaProductos.Add(productoAlimenticio);
+                                        break;
 
-                                default:
-                                    Console.WriteLine($"Tipo de producto no válido en la línea: {linea}");
-                                    continue; // Pasar a la siguiente línea del archivo
+                                    case "3":
+                                        string materialesUtilizados = campos[5];
+                                        bool tienePilas = campos[8] == "1";
+                                        bool estaPrecargado = campos[9] == "1";
+                                        ProductoElectronico productoElectrónico = new ProductoElectronico(listaProductos.Count, nombre, int.Parse(unidades), precioUnidad, descripcion, materialesUtilizados, tienePilas, estaPrecargado);
+                                        listaProductos.Add(productoElectrónico);
+                                        break;
+
+                                    default:
+                                        Console.WriteLine($"Tipo de producto no válido en la línea: {linea}");
+                                        continue; // Pasar a la siguiente línea del archivo
+                                }
+                                // Agregar el nuevo producto a la lista de productos
+                                Console.WriteLine($"Producto {campos[1]} cargado desde el archivo correctamente.");
                             }
-                            // Agregar el nuevo producto a la lista de productos
-                            Console.WriteLine("Productos cargados desde el archivo correctamente.");
+                            else
+                            {
+                                Console.WriteLine($"Ya hay 12 elementos en la máquina, no se ha podido cargar el producto con nombre: {campos[1]}");
+                            }
                         }
                     }
                 }
@@ -351,6 +365,7 @@ namespace Maquina_Vending
                 Console.WriteLine($"Error al cargar productos desde el archivo: {ex.Message}");
             }
         }
+
 
         public void ReducirUnidadesProducto()
         {
