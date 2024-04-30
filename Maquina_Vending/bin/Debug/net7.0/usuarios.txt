@@ -1,2 +1,4 @@
 0|admin|Admin|Admin|Admin|admin
 2|Curro|Francisco|Daza|Sánchez|1234
+3|Nia||||
+4|curro|Francisco|Daza|Sanchez|1234

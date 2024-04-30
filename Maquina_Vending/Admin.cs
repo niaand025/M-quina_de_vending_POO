@@ -10,7 +10,9 @@ namespace Maquina_Vending
     {
         public Admin(int id, string nickName, string nombre, string ape1, string ape2, string password, List<Producto> ListaProductos) :
         base(id, nickName, nombre, ape1, ape2, password, ListaProductos)
-        { }
+        {
+            
+        }
 
 
         public override void Salir()
@@ -30,7 +32,8 @@ namespace Maquina_Vending
                 Console.WriteLine("2.- Mostrar productos");
                 Console.WriteLine("3.- Carga individual de productos");
                 Console.WriteLine("4.- Carga completa de productos");
-                Console.WriteLine("5.- salir");
+                Console.WriteLine("5.- Reducir las unidades de un producto a 0");
+                Console.WriteLine("6.- salir");
                 Console.WriteLine("Opción: ");
                 try
                 {
@@ -50,11 +53,15 @@ namespace Maquina_Vending
                             break;
 
                         case 4:
-                            maquinaVending.CargarProductosDesdeArchivo("example_vending_file_practical_work_i.csv");
+                            maquinaVending.CargarProductosDesdeArchivo();
                             break;
 
                         case 5:
-                            Console.WriteLine("Saleindo...");
+                            maquinaVending.ReducirUnidadesProducto();
+                            break;
+
+                        case 6:
+                            Salir();
                             break;
 
                         default:
@@ -72,7 +79,7 @@ namespace Maquina_Vending
                 }
                 Console.WriteLine("Presiona una tecla para continuar...");
                 Console.ReadKey();
-            } while (opcion != 5);
+            } while (opcion != 6);
         }
 
 

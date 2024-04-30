@@ -22,74 +22,80 @@ namespace Maquina_Vending
             // Buscar el producto en la lista de productos disponibles
             Producto productoSeleccionado = listaProductos.FirstOrDefault(p => p.Id == idProducto);
 
-            //Verificar si el  prodcuto existe
+            //Verificar si el producto existe
             if (productoSeleccionado != null)
             {
-                // Mostrar la información del producto seleccionado
-                Console.WriteLine("Información del producto seleccionado:");
-                productoSeleccionado.MostrarInformacion();
+                if (productoSeleccionado.Unidades > 0)
+                {
+                    Console.Clear();
+                    // Mostrar la información del producto seleccionado
+                    Console.WriteLine("Información del producto seleccionado:\n");
+                    productoSeleccionado.MostrarInformacion();
 
-                // Solicitar al usuario que elija el método de pago
-                Console.WriteLine("Seleccione el método de pago:");
-                Console.WriteLine("1. Pago en efectivo");
-                Console.WriteLine("2. Pago con tarjeta");
-                Console.Write("Elija una opción: ");
-                int opcion = int.Parse(Console.ReadLine());
-                try
-                {
-                    switch (opcion)
+                    // Solicitar al usuario que elija el método de pago
+                    Console.WriteLine("Seleccione el método de pago:");
+                    Console.WriteLine("1. Pago en efectivo");
+                    Console.WriteLine("2. Pago con tarjeta");
+                    Console.Write("Elija una opción: ");
+                    int opcion = int.Parse(Console.ReadLine());
+                    try
                     {
-                        case 1:
-                            if (PagoEfectivo(productoSeleccionado))
-                            {
-                                productoSeleccionado.Unidades = productoSeleccionado.Unidades - 1; // Disminuir las unidades del producto
-                                Console.WriteLine("¡Compra exitosa! Reciba su producto.");
-                                return;
-                            }
-                            else
-                            {
-                                Console.WriteLine("El pago en efectivo no fue suficiente.");
-                                return;
-                            }
-                            break;
-                        case 2:
-                            if (PagoTarjeta())
-                            {
-                                Console.WriteLine("¡Compra exitosa! Reciba su producto.");
-                                productoSeleccionado.Unidades = productoSeleccionado.Unidades - 1; // Disminuir las unidades del producto
-                                return;
-                            }
-                            else
-                            {
-                                Console.WriteLine("El pago con tarjeta fue rechazado.");
-                                return;
-                            }
-                            break;
-                        case 3:
-                            Console.WriteLine("Saliendo...");
-                            break;
-                        default:
-                            Console.WriteLine("Opción de pago no válida.");
-                            break;
-                    } while (opcion != 3) ;
+                        switch (opcion)
+                        {
+                            case 1:
+                                if (PagoEfectivo(productoSeleccionado))
+                                {
+                                    productoSeleccionado.Unidades = productoSeleccionado.Unidades - 1; // Disminuir las unidades del producto
+                                    Console.WriteLine("¡Compra exitosa! Reciba su producto.");
+                                    return;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("El pago en efectivo no fue suficiente.");
+                                    return;
+                                }
+                            case 2:
+                                if (PagoTarjeta())
+                                {
+                                    Console.WriteLine("¡Compra exitosa! Reciba su producto.");
+                                    productoSeleccionado.Unidades = productoSeleccionado.Unidades - 1; // Disminuir las unidades del producto
+                                    return;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("El pago con tarjeta fue rechazado.");
+                                    return;
+                                }
+                            case 3:
+                                Console.WriteLine("Saliendo...");
+                                break;
+                            default:
+                                Console.WriteLine("Opción de pago no válida.");
+                                break;
+                        } while (opcion != 3) ;
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Error: Opción invalida. Por favor, ingrese un número válido.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error: " + ex.Message);
+                    }
+                    Console.WriteLine("Presiona una tecla para continuar...");
+                    Console.ReadKey();
                 }
-                catch (FormatException)
+                else
                 {
-                    Console.WriteLine("Error: Opción invalida. Por favor, ingrese un número válido.");
+                    Console.WriteLine("El producto está agotado.");
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error: " + ex.Message);
-                }
-                Console.WriteLine("Presiona una tecla para continuar...");
-                Console.ReadKey();
             }
             else
             {
                 Console.WriteLine("El producto no está disponible.");
             }
-
         }
+
 
         public void MostrarProductosDisponibles()
         {
@@ -102,17 +108,34 @@ namespace Maquina_Vending
         private bool PagoEfectivo(Producto producto)
         {
             Console.WriteLine($"El precio del producto es: {producto.PrecioUnidad}");
-            Console.WriteLine("Por favor, ingrese el monto en efectivo:");
+            float montoRestante = producto.PrecioUnidad;
 
-            double montoIngresado = 0;
-            while (montoIngresado < producto.PrecioUnidad)
+            Console.WriteLine($"Por favor, ingrese el monto en efectivo (puede usar billetes de 5, 10, 20, 50 y 100 euros, y monedas de 1 y 2 euros):");
+
+            while (montoRestante > 0)
             {
-                Console.Write("Ingrese una moneda: ");
-                double moneda = double.Parse(Console.ReadLine());
-                montoIngresado += moneda;
+                Console.WriteLine($"Monto restante: {montoRestante}euros");
+                Console.Write("Ingrese una moneda o billete: ");
+
+                if (float.TryParse(Console.ReadLine(), out float monto))
+                {
+                    if (monto == 1 || monto == 2 || monto == 5 || monto == 10 || monto == 20 || monto == 50 || monto == 100)
+                    {
+                        montoRestante -= monto;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Por favor, ingrese una moneda o billete válido.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Por favor, ingrese un valor numérico válido.");
+                }
             }
 
-            return montoIngresado >= producto.PrecioUnidad;
+            Console.WriteLine("¡Pago exitoso! Gracias por su compra.");
+            return true;
         }
 
         private bool PagoTarjeta()
@@ -256,70 +279,100 @@ namespace Maquina_Vending
             
         }
 
-        public void CargarProductosDesdeArchivo(string archivo)
-        {
+        public void CargarProductosDesdeArchivo()
+        {            
+
+            Console.WriteLine("Introduce el nombre del archivo:");
+            string nombreFichero = Console.ReadLine();
             try
             {
-                // Leer el archivo CSV línea por línea
-                using (StreamReader reader = new StreamReader(archivo))
+                if (File.Exists(nombreFichero))
                 {
-                    string linea;
-                    while ((linea = reader.ReadLine()) != null)
+                    // Leer el archivo CSV línea por línea
+                    StreamReader reader = new StreamReader(nombreFichero);
                     {
-                        // Dividir la línea en sus campos utilizando el delimitador ";"
-                        string[] campos = linea.Split(';');
-
-                        // Extraer los datos de cada campo
-                        int id = int.Parse(campos[0]);
-                        string nombre = campos[1];
-                        int unidades = int.Parse(campos[2]);
-                        float precioUnidad = float.Parse(campos[3]);
-                        string descripcion = campos[4];
-                        int tipoProducto = int.Parse(campos[5]);
-
-                        // Crear una instancia del tipo de producto adecuado según el valor de tipoProducto
-                        Producto nuevoProducto = null;
-                        switch (tipoProducto)
+                        string linea;
+                        while ((linea = reader.ReadLine()) != null)
                         {
-                            case 1:
-                                string material = campos[6];
-                                double peso = double.Parse(campos[7]);
-                                nuevoProducto = new MaterialPrecioso(id, nombre, unidades, precioUnidad, descripcion, material, peso);
-                                break;
+                            // Dividir la línea en sus campos utilizando el delimitador ";"
+                            string[] campos = linea.Split(';');
 
-                            case 2:
-                                string informacionNutricional = campos[6];
-                                nuevoProducto = new ProductoAlimenticio(id, nombre, unidades, precioUnidad, descripcion, informacionNutricional);
-                                break;
+                            // Extraer los datos de cada campo
+                            string tipoProducto = campos[0];
+                            string nombre = campos[1];
+                            string unidades = campos[2];
+                            float precioUnidad = float.Parse(campos[3]);
+                            string descripcion = campos[4];
 
-                            case 3:
-                                string materialesUtilizados = campos[6];
-                                bool tienePilas = campos[7].ToLower() == "si";
-                                bool estaPrecargado = campos[8].ToLower() == "si";
-                                nuevoProducto = new ProductoElectronico(id, nombre, unidades, precioUnidad, descripcion, materialesUtilizados, tienePilas, estaPrecargado);
-                                break;
+                            // Crear una instancia del tipo de producto adecuado según el valor de tipoProducto
+                            switch (tipoProducto)
+                            {
+                                case "1":
+                                    string material = campos[5];
+                                    double peso = double.Parse(campos[6].Replace("g",""));
+                                    MaterialPrecioso materialPrecioso = new MaterialPrecioso(listaProductos.Count, nombre, int.Parse(unidades), precioUnidad, descripcion, material, peso);
+                                    listaProductos.Add(materialPrecioso);
+                                    break;
 
-                            default:
-                                Console.WriteLine($"Tipo de producto no válido en la línea: {linea}");
-                                continue; // Pasar a la siguiente línea del archivo
+                                case "2":
+                                    string informacionNutricional = campos[7];
+                                    ProductoAlimenticio productoAlimenticio = new ProductoAlimenticio(listaProductos.Count, nombre, int.Parse(unidades), precioUnidad, descripcion, informacionNutricional);
+                                    listaProductos.Add(productoAlimenticio);
+                                    break;
+
+                                case "3":
+                                    string materialesUtilizados = campos[5];
+                                    bool tienePilas = campos[8] == "1";
+                                    bool estaPrecargado = campos[9] == "1";
+                                    ProductoElectronico productoElectrónico = new ProductoElectronico(listaProductos.Count, nombre, int.Parse(unidades), precioUnidad, descripcion, materialesUtilizados, tienePilas, estaPrecargado);
+                                    listaProductos.Add(productoElectrónico);
+                                    break;
+
+                                default:
+                                    Console.WriteLine($"Tipo de producto no válido en la línea: {linea}");
+                                    continue; // Pasar a la siguiente línea del archivo
+                            }
+                            // Agregar el nuevo producto a la lista de productos
+                            Console.WriteLine("Productos cargados desde el archivo correctamente.");
                         }
-
-                        // Agregar el nuevo producto a la lista de productos
-                        listaProductos.Add(nuevoProducto);
                     }
                 }
-
-                Console.WriteLine("Productos cargados desde el archivo correctamente.");
+                else
+                {
+                    Console.WriteLine("No se encuentra el archivo");
+                }
             }
             catch (FileNotFoundException)
             {
-                Console.WriteLine($"El archivo '{archivo}' no se encontró.");
+                Console.WriteLine($"El archivo '{nombreFichero}' no se encontró.");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al cargar productos desde el archivo: {ex.Message}");
             }
         }
+
+        public void ReducirUnidadesProducto()
+        {
+            MostrarProductosDisponibles();
+            Console.Write("Ingrese el ID del producto del que desea reducir las unidades a 0: ");
+            int idProducto = int.Parse(Console.ReadLine());
+
+            // Buscar el producto en la lista de productos disponibles
+            Producto productoSeleccionado = listaProductos.FirstOrDefault(p => p.Id == idProducto);
+
+            // Verificar si el producto existe
+            if (productoSeleccionado != null)
+            {
+                productoSeleccionado.Unidades = 0;
+                Console.WriteLine("Unidades del producto reducidas a 0 exitosamente.");
+            }
+            else
+            {
+                Console.WriteLine("El producto no está disponible.");
+            }
+        }
+
 
     }
 }

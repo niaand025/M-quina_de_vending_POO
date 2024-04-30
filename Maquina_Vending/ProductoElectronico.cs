@@ -15,9 +15,9 @@ namespace Maquina_Vending
         public ProductoElectronico(int id, string nombre, int unidades, float precioUnidad, string descripcion, string material, bool pilas, bool precargado)
         : base(id, nombre, unidades, precioUnidad, descripcion)
         {
-            Material = material;
-            Pilas = pilas;
-            Precargado = precargado;
+            this.Material = material;
+            this.Pilas = pilas;
+            this.Precargado = precargado;
         }
         public ProductoElectronico(int id) : base(id) { }
 
@@ -35,13 +35,13 @@ namespace Maquina_Vending
         {
             base.SolicitarInformación();
             Console.Write("Materiales utilizados: ");
-            Material = Console.ReadLine();
+            this.Material = Console.ReadLine();
 
             Console.Write("¿Tiene pilas? (Sí/No): ");
-            Pilas = Console.ReadLine().ToLower() == "si";
+            this.Pilas = Console.ReadLine().ToLower() == "si";
 
             Console.Write("¿Está precargado? (Sí/No): ");
-            Precargado = Console.ReadLine().ToLower() == "si";
+            this.Precargado = Console.ReadLine().ToLower() == "si";
         }
     }
 }

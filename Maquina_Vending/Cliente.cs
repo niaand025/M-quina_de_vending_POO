@@ -11,6 +11,7 @@ namespace Maquina_Vending
         public Cliente(int id, string nickName, string nombre, string ape1, string ape2, string password, List<Producto> ListaProductos) :
         base(id, nickName, nombre, ape1, ape2, password, ListaProductos)
         {
+
         }
         public override void Salir()
         {

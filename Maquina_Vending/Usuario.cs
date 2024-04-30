@@ -18,13 +18,13 @@ namespace Maquina_Vending
 
         public Usuario(int id, string nickName, string nombre, string ape1, string ape2, string password, List<Producto> listaProductos)
         {
-            Id = id;
-            NickName = nickName;
-            Nombre = nombre;
-            Ape1 = ape1;
-            Ape2 = ape2;
-            Password = password;
-            ListaProductos = listaProductos;
+            this.Id = id;
+            this.NickName = nickName;
+            this.Nombre = nombre;
+            this.Ape1 = ape1;
+            this.Ape2 = ape2;
+            this.Password = password;
+            this.ListaProductos = listaProductos;
         }
         public Usuario(string nombre, string ape1, string ape2)
         {
