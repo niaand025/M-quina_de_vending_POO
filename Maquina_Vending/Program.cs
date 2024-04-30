@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 
 namespace Maquina_Vending
@@ -13,14 +14,13 @@ namespace Maquina_Vending
             listaUsuarios = new List<Usuario>();
             listaProductos = new List<Producto>();
 
-            //Llamamos a la función para cargar los usuarios desde un archivo. Si devuelve false, es que no hya usuarios
+            //Llamamos a la función para cargar los distintos usuarios desde un archivo.
             if (!CargarUsuariosDeArchivo())
-            {//Si no hay usuarios, creamos al admin
+            {//Si no hay usuarios, creamos al Administrador ("admin")
                 Admin admin = new Admin(0, "admin", "Admin", "Admin", "Admin", "admin", listaProductos);
                 listaUsuarios.Add(admin);
                 admin.ToFile(); //Guardamos el admin en el archivo
             }
-            
 
             int opcion = 0;
             do
@@ -43,6 +43,11 @@ namespace Maquina_Vending
                             AddUsuario();
                             break;
 
+                        case 3:
+                            Thread.Sleep(2000);
+                            Environment.Exit(500);
+                            break;
+
                         default:
                             Console.WriteLine("Opción no valida");
                             break;
@@ -61,7 +66,7 @@ namespace Maquina_Vending
             } while (opcion != 3);
         }
 
-        // Solicita usuario y contraseña, comprueba si coincide, y si es así muestra su menú
+        //Solicita el usuario y una contraseña, comprueba si coinciden con los datos registrados. Si estos coinciden, iniciara sesión correctamente
         public static void Login()
         {
             Console.WriteLine("Nombre de usuario: ");
@@ -83,13 +88,14 @@ namespace Maquina_Vending
             }
         }
 
+        //Añade un usuario con sus respectivos datos, al sistema.
         public static void AddUsuario()
         {
             Console.Clear();
             Console.WriteLine("=== Registro de nuevo usuario ===");
             Console.WriteLine("Ingrese un nickname: ");
             string nickname = Console.ReadLine();
-            // Verificar si el nickname ya está en uso            
+            // Verifica si el "nickname" ya está en uso            
             foreach (Usuario usuario in listaUsuarios)
             {
                 if (usuario.NickName == nickname)
@@ -102,7 +108,7 @@ namespace Maquina_Vending
                     Console.WriteLine("Nickname valido");
                 }
             }
-            // Solicitar otros datos del usuario
+            // Solicitar el resto de datos de usuario para registrarlos
             Console.WriteLine("Ingrese su nombre: ");
             string nombre = Console.ReadLine();
             Console.WriteLine("Ingrese su primer apellido: ");
@@ -111,17 +117,16 @@ namespace Maquina_Vending
             string ape2 = Console.ReadLine();
             // Generar un ID único para el nuevo usuario
             int id = listaUsuarios.Count + 1;
-            // Solicitar contraseña
             Console.WriteLine("Ingrese su contraseña: ");
             string password = Console.ReadLine();
             // Crear el nuevo cliente y agregarlo a la lista de usuarios
             Cliente nuevoUsuario = new Cliente(id, nickname, nombre, ape1, ape2, password, listaProductos);
             listaUsuarios.Add(nuevoUsuario);
-            nuevoUsuario.ToFile();  //Guardamos el usuario en el archivo
+            nuevoUsuario.ToFile(); //Guardamos el nuevo usuario en el archivo
 
             Console.WriteLine("Usuario registrado con éxito.");
         }
-        private static bool CargarUsuariosDeArchivo()
+        private static bool CargarUsuariosDeArchivo()  //Carga los distintos usuarios del sistema para poder 
         {
             bool usuariosCargados = false;
             try
@@ -164,6 +169,6 @@ namespace Maquina_Vending
 
             return usuariosCargados;
         }
-        
+
     }
 }
